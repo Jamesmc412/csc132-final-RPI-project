@@ -240,7 +240,7 @@ class Game(Frame):
         # compare the verb and noun to known values
         action = action.lower()
         # set a default response
-        response = "I don't understand. Try verb noun. Valid verbs are go, look, and take"
+        response = "I don't understand. Try verb noun. Valid verbs are go, look, approach and take"
 
         # exit the game if the player wants to leave (supports quit,
         # exit, and bye)
@@ -305,7 +305,48 @@ class Game(Frame):
                             # no need to check any more grabbable
                             # items
                             break
+  ##############################################################################
+        # this is my addition to the code
+        # adding fourth verb "approach"
 
+                elif (verb == "approach"):
+
+                    # default response
+
+                    response = "Approach what?"
+
+                    # checking for a valid item in the room
+
+                    for items in Game.currentRoom.items:
+
+                        # the valid item is found
+
+                        if (noun == items):
+
+                            # player interacts with the fireplace
+
+                            print("You decide to start the fire")
+                            print("Roll an arcane check")
+
+                            # really just a DnD reference
+
+                            # this line creates a list and generates a random number
+                            # like a check roll in DnD
+                            
+                            roll = []
+                            roll.append(randint(0,20))
+                            print(roll)
+
+                            # if the "roll" is not high enough, the character dies
+                            # if the "roll" is high enough, they are warmed by the fire
+
+                            if (roll[0] <= 12):
+                                print("As you start the fire, you start the fire\
+                                you also start the fire on your cloak by mistake.")
+                                print("Fire has been added to inventory!")
+                                Game.player_input.delete(0, END)
+                            else:
+                                print("You build a lovely fire and warm yourself with it.")  
         # display the response on the right of the GUI
         # display the room's image on the left of the GUI
         # clear the player's input
