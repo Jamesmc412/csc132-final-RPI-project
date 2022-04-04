@@ -87,13 +87,13 @@ class Room:
         
         #the visible items
         s += "You see: "
-        for item in self.items,keys():
+        for item in self.items.keys():
             s += item + " "
         s += "\n"
         
         #the exits from the room
         s += "Exits: "
-        for exit in self.exits.keys.keys():
+        for exit in self.exits.keys():
             s += exit + " "
         return s
 
