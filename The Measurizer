@@ -1,0 +1,140 @@
+########################################
+#The Setup
+########################################
+import RPi.GPIO as GPIO
+from time import sleep, time
+
+#constants
+DEBUG = False          #debug mode
+SETTLE_TIME = 2         #seconds to let the sensor settle
+CALIBRATIONS = 5        #number of calibrations
+CALIBRATION_DELAY = 1   #seconds between each calibration
+TRIGGER_TIME = 0.00001  #seconds needed to trigger the sensor
+SPEED_OF_SOUND = 343    #in m/s
+#set the RPi to the Broadcom pin layout
+GPIO.setmode(GPIO.BCM)
+
+#GPIO Pins
+TRIG = 18               #the sensor's TRIG pin
+ECHO = 27               #the sensor's ECHO pin
+GPIO.setup(TRIG, GPIO.OUT) #TRIG is an output
+GPIO.setup(ECHO, GPIO.IN) #ECHO is an input
+
+class Measurement(Frame):
+    def __init__(self,master,measure_type):
+        Frame.__init__(self,master)
+        self.measurement_type = measurement_type
+
+    @property
+    def measurement_type(self):
+        self.measurement_type = self._measurement_type
+
+    @measurement_type.setter
+    def measurement_type(self,value):
+        self._measurement_type = value
+
+    #Functions
+    def calibrate():
+        print("Calibrating...")
+        
+        #prompt the user for a object's known distance
+        print("-Place the sensor a measured distance away from an object")
+        known_dist = int(input("What is the measrued distance? "))
+
+        #measure the distance to the object with the sensor (find an avg)
+        print("-Getting the calibration measurements...")
+        dist_avg = 0
+        for i in range(CALIBRATIONS):
+            dist = get_distance()
+            if DEBUG:
+                print("--Got {}cm".format(dist))
+            #keep a running sum
+            dist_avg += dist
+
+            #delay a shorot time before using the sensor again
+            sleep(CALIBRATION_DELAY)
+
+        #calculate the average
+        dist_avg /= CALIBRATIONS
+        if DEBUG:
+            print("--Average is {}cm".format(dist_avg))
+
+        #calculate the correction factor
+        correction_factor = known_dist / dist_avg
+
+        if DEBUG:
+            print("--Correction factor is {}".format(correction_factor))
+
+        print("Done.")
+        print
+
+        return correction_factor
+        
+    def get_distance():
+        #trigger the sensor
+        GPIO.output(TRIG, GPIO.HIGH)
+        sleep(TRIGGER_TIME)
+        GPIO.output(TRIG, GPIO.LOW)
+
+        #wait for the ECHO pin to read high
+        while GPIO.input(ECHO) == GPIO.LOW:
+            start = time()
+        while GPIO.input(ECHO) == GPIO.HIGH:
+            end = time()
+
+        #calculate the duration that the ECHO was high
+        duration = end - start
+
+        #calculate distance, d = r*t
+        dist = SPEED_OF_SOUND * duration
+
+        #half total distance traveled
+        dist /= 2
+
+        #convert dist to centimeters
+        dist *= 100
+
+        return dist,unsortedvariables
+
+#### MAIN ####
+
+#First, allow the sensor to settle for a bit
+print("Waiting for sensor to settle ({}s)...".format(SETTLE_TIME))
+GPIO.output(TRIG, GPIO.LOW)
+sleep(SETTLE_TIME)
+
+#Next, Calibrate the sensor.
+correction_factor = calibrate()
+
+
+#Then, measure.
+input("Press enter to begin...")
+print("Getting measurements:")
+unsortedvariables = []
+while True:
+    #get distance and correct it
+    print("-Measuring...")
+    distance = get_distance() * correction_factor
+    unsortedvariables.append(get_distance() * correction_factor)
+    sleep(1)
+
+    #round to 4 decimal places
+    distance = round(distance,4)
+
+    #display the distance measured
+    print("--Distance measured: {}cm".format(distance))
+    
+    #prompt for another measure
+    i = input("--Get another measure? (Y/N)? ")
+    #stop measuring if desired
+    if (not i in ["Y","y","yes","Yes","YES",""]):
+        break
+sortedvariables = unsortedvariables.sort()
+#Finally, claenup the GPIO pins
+print("Done.")
+print("Unsorted Measurements:")
+print(unsortedvariables)
+print("Sort Measurements:")
+print(sortedvariables)
+GPIO.cleanup()
+
