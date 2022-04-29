@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from time import sleep
+from math import *
 
 #constants
 DEBUG = False
@@ -74,7 +75,7 @@ def get_distance_for_servo():
 
 def get_height():
 
-    height = (get_distance_for_servo())**2 - (get_distance())**2
+    height = math.sqrt((get_distance_for_servo())**2 - (get_distance())**2)
 
     return height
 
