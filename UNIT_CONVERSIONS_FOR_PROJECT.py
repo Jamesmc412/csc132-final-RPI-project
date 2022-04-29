@@ -15,6 +15,11 @@ def feet_per_second():
     distance_in_ft = SPEED_OF_SOUND * 1125
     return distance_in_ft
 
+#conversion for yards
+def yards_per_second():
+    distance_in_yrds = SPEED_OF_SOUND * 375
+    return distance_in_yrds
+
 #conversion for mph
 def miles_per_hour():
     distance_in_miles = SPEED_OF_SOUND * 767
@@ -31,6 +36,8 @@ print(meters_per_second())
 print(centimeters_per_second())
 
 print(feet_per_second())
+
+print(yards_per_second())
 
 print(miles_per_hour())
 
