@@ -7,6 +7,7 @@ import RPi.GPIO as GPIO
 from time import sleep, time
 import pygame
 from array import array
+from Wave import WaveformVis
 
 MIXER_FREQ = 44100
 MIXER_SIZE = -16
@@ -29,12 +30,37 @@ class Note(pygame.mixer.Sound):
     #initialize the note's samples (using an array of signed 16-bit "shorts")
     samples = array("h", [0] * period)
     
+    waveform_names = ["Rectangle Wave", "Triangle Wave", "Sawtooth Wave"]
     #generate the note's samples
-    for t in range(period):
-      if (t < period / 2):
-        samples[t] = amplitude
-      else:
-        samples[t] = -amplitude
+    for i in len(waveform_names):
+      waveform_name = waveform_names[i]
+      if (waveform_names[i] == "Rectangle Wave"):
+        for t in range(period):
+          if (t < period / 2):
+            samples[t] = amplitude
+          else:
+            samples[t] = -amplitude
+      if (waveform_names[i] == "Triangle Wave"):
+        for t in range(period):
+          if (t <= period / 4):
+            samples[t] = (amplitude  + t)
+          elif ((t > period /4) and (t <= period/2)):
+            samples[t] = (amplitude - t)
+          elif ((t > period / 2)) and (t <= period * (3/4)):
+            samples[t] = -(amplitude + t)
+          else:
+            samples[t] = -(amplitude - t)
+      if (waveform_names[i] == "Sawtooth Wave"):
+        for t in range(period):
+          if (t <= period / 2):
+            samples[t] = (amplitude + t)
+          else:
+            samples[t] = -(amplitude - t)    
+
+    # imported code from waveform
+    vis = WaveformVis()
+    vis.visSamples(samples, waveform_name)
+
     return samples
   # waits until a note is pressed
 def wait_for_note_start():
