@@ -36,7 +36,7 @@ def calibrate():
 
 
 
-def get_distance():
+def get_ground_distance():
 
     GPIO.output(TRIG, GPIO.HIGH)
     sleep(TRIGGER_TIME)
@@ -47,7 +47,7 @@ def get_distance():
     while (GPIO.input(ECHO) == GPIO.HIGH):
         end_time = time()
 
-    duration = end - start
+    duration = end_time - start_time
 
     distance_ground = SPEED_OF_SOUND * duration
 
@@ -55,32 +55,54 @@ def get_distance():
 
     return distance_ground
 
-def get_distance_for_servo():
+def get_mid_distance():
     GPIO.output(TRIG, GPIO.HIGH)
     sleep(TRIGGER_TIME)
     GPIO.output(TRIG, GPIO.LOW)
 
     while(GPIO.input(ECHO) == GPIO.lOW):
-        start_time()
+        start_time= time()
     while(GPIO.input(ECHO) == GPIO.HIGH):
         end_time = time()
 
     duration = end_time - start_time
 
-    distance_for_servo = SPEED_OF_SOUND * duration
+    mid_distance = SPEED_OF_SOUND * duration
 
-    distance_for_servo *= 100
+    mid_distance *= 100
 
-    return distance_for_servo
+    return mid_distance
 
-def get_height():
+def get_height_A():
 
-    height = math.sqrt((get_distance_for_servo())**2 - (get_distance())**2)
+    height_A = math.sqrt((get_ground_distance())**2 - (get_mid_distance())**2)
 
-    return height
+    return height_A
 
-get_height()
+def get_top_distance():
+    GPIO.output(TRIG, GPIO.HIGH)
+    sleep(TRIGGER_TIME)
+    GPIO.output(TRIG, GPIO.LOW)
 
-    
+    while(GPIO.input(ECHO) == GPIO.LOW):
+        start_time = time()
+    while(GPIO.input(ECHO) == GPIO.HIGH):
+        end_time = time()
 
-    
+    duration = end_time - start_time
+
+    top_distance = SPEED_OF_SOUND * duration
+
+    top_distance *= 100
+
+    return top_distance
+
+def get_height_B():
+    height_B = math.sqrt((get_top_distance())**2 - (get_mid_distance())**2)
+
+    return height_B
+
+def get_final_height():
+    final_height = height_A() + height_B()
+
+    return final_height
