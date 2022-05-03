@@ -10,14 +10,15 @@ TRIGGER_TIME = 0.00001
 SPEED_OF_SOUND = 343
 
 # RPi to the broadcom pin layout
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
 # GPIO pins
-TRIG =18
-ECHO = 27
+TRIG =13
+ECHO = 15
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
-
+GPIO.setup(11, GPIO.OUT)
+servo = GPIO.PWM(11, 50)
 # calibrate function
 def calibrate():
     distance_avg = 0
@@ -56,6 +57,12 @@ def get_ground_distance():
     return distance_ground
 
 def get_mid_distance():
+    servo.start(0)
+    duty = 2
+    while duty <= 12:
+        servo.ChangeDutyCycle(duty)
+        time.sleep(1)
+        duty = duty + 1
     GPIO.output(TRIG, GPIO.HIGH)
     sleep(TRIGGER_TIME)
     GPIO.output(TRIG, GPIO.LOW)
