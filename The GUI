@@ -3,7 +3,7 @@
 # tkinter and ttk module
 from tkinter import *
 from tkinter.ttk import *
-from CodeForHeight import *
+# from CodeForHeight import *
 
 # creates a Tk() object
 master = Tk()
@@ -12,56 +12,18 @@ master = Tk()
 # Toplevel widget
 master.title("Choose your Units:")
 img = PhotoImage(file = r"C:\Users\james\OneDrive\Desktop\Spring '22\CSC 132\Pi Activities\please work.gif")
-backgroundImage = Label(image = img)
-backgroundImage.pack(fill=BOTH)
-backgroundImage.place(x=-5, y=-5)
+# backgroundImage = Label(image = img)
+# backgroundImage.pack(fill=BOTH)
+# backgroundImage.place(x=-5, y=-5)
 
 # sets the geometry of toplevel
 master.geometry("280x150")
 master.resizable(False, False)
-canvas = Canvas(master, bg="white", width= 220 , height= 140)
-canvas.pack(pady=10)
+canvas = Canvas(master, bg= "white", width= 220 , height= 140)
+canvas.pack(fill=BOTH, expand= True)
+canvas.create_image(0,0, image = img, anchor= "nw")
+canvas.create_text(150, 40, text= "Choose a measurement:", fill = "white")
 
-def centimeters():
-#     CodeForHeight.get_distance()
-#     CodeforHeight.get_distance_for_servo()
-#     CodeForHeight.get_height()
-    pass
-def meters():
-    CodeForHeight.get_distance()
-    CodeforHeight.get_distance_for_servo()
-    CodeForHeight.get_height()
-    final = CodeForHeight.get_height()
-    final // 100 = good
-    return good
-    pass
-
-def inches():
-    pass
-#     CodeForHeight.get_distance()
-#     CodeforHeight.get_distance_for_servo()
-#     final = CodeForHeight.get_height()
-#     final * (25/64) = good
-#     return good
-    
-def feet():
-    pass
-#     CodeForHeight.get_distance()
-#     CodeforHeight.get_distance_for_servo()
-#     CodeForHeight.get_height()
-#     final = CodeForHeight.get_height()
-#     final // 30.48 = good
-#     return good
-def yards():
-    pass
-#     CodeForHeight.get_distance()
-#     CodeforHeight.get_distance_for_servo()
-#     CodeForHeight.get_height()
-#     final = CodeForHeight.get_Height()
-#     final // 91.44 = good
-#     return good
-# function to open a new window
-# on a button click
 def standardUnits():
 	
     # Toplevel object which will
@@ -76,30 +38,20 @@ def standardUnits():
     newWindow.geometry("280x150")
     newWindow.resizable(False, False)
 
-    # a new canvas
-    canvas2 = Canvas(newWindow, bg="white",width= 220 , height= 140)
-    canvas2.pack(pady=10)
-
     # a good background
-    img2 = PhotoImage(file = r"C:\Users\james\OneDrive\Desktop\Spring '22\CSC 132\Pi Activities\Flag_of_the_United_Kingdom.svg.gif")
-    backgroundImage2 = Label(image = img2)
-    backgroundImage2.pack(fill=BOTH)
-    backgroundImage2.place(x=-5, y=-5)
+    #img2 = PhotoImage(file = r"C:\Users\james\OneDrive\Desktop\Spring '22\CSC 132\Pi Activities\Flag_of_the_United_Kingdom.svg.gif")
+    canvas2 = Canvas(newWindow, bg="white",width= 220 , height= 140)
+    canvas2.pack(fill= BOTH, expand = True)
+    canvas2.create_image(0,0, image= img, anchor="nw")
+    canvas2.create_text(150, 40, text="Standard Unit Options:", fill= "white")
 
-    # A Label widget to show in toplevel
-    # spec = Label(newWindow, text ="Choose a specific measurement:")
-    # spec.pack()
-    
-    sbtn = Button(canvas2, text ="Click for Inches", command = inches())
-    sbtn.pack(pady = 10)
+    newButton = Button(newWindow, text="Inches")
+    newButton2 = Button(newWindow, text="Feet")
+    newButton3 = Button(newWindow, text="Yards")
 
-    sbtntwo = Button(canvas2, text="Click for Feet:", command = feet())
-    sbtntwo.pack(pady=10)
-
-    sbtnthree = Button(canvas2, text = "Click for Yards:", command=yards())
-    sbtnthree.pack(pady=10) 
-   
-
+    canvas2.create_window(150, 55, window = newButton, anchor="n")
+    canvas2.create_window(150, 85, window = newButton2, anchor="n")
+    canvas2.create_window(150, 115, window = newButton3, anchor="n")
 
 def metricUnits():
 	
@@ -110,33 +62,107 @@ def metricUnits():
     # sets the title of the
     # Toplevel widget
     newWindow.title("Metric Units")
+    newWindow.resizable(False, False)
 
     # sets the geometry of toplevel
     newWindow.geometry("280x150")
 
     
-    img3 = PhotoImage( file = r"C:\Users\james\OneDrive\Desktop\Spring '22\CSC 132\Pi Activities\Flag_of_the_United_Kingdom.svg.gif")
-    # new Canvas 
-    canvas3 = Canvas(newWindow, bg="white", width= 220 , height= 100)
-    canvas3.pack(fill=BOTH, expand=True)
-    canvas3.create_image(0,0, image = img3, anchor="nw")
+    # img2 = PhotoImage(file = r"C:\Users\james\OneDrive\Desktop\Spring '22\CSC 132\Pi Activities\Flag_of_the_United_Kingdom.svg.gif")
+    canvas2 = Canvas(newWindow, bg="white",width= 220 , height= 140)
+    canvas2.pack(fill= BOTH, expand = True)
+    canvas2.create_image(0,0, image= img, anchor="nw")
+    canvas2.create_text(150, 30, text="Metric Unit Options:", fill = "white")
+
+    newButton = Button(newWindow, text="Centimeters")
+    newButton2 = Button(newWindow, text="Meters")
+
+    canvas2.create_window(150, 55, window = newButton, anchor="n")
+    canvas2.create_window(150, 85, window = newButton2, anchor="n")    
+
+button1 = Button(master, text= "Standard Units", command=standardUnits)
+button2 = Button(master, text= "Metric Units", command= metricUnits)
+
+button1_window = canvas.create_window(150,55, anchor="n", window=button1)
+button2_window = canvas.create_window(150,85, anchor="n", window=button2)
+
+
+
+# def centimeters():
+#     pass
+#     # get_distance()
+#     # get_distance_for_servo()
+#     # good = get_height()
+#     # lastWindow = TopLevel(master)
+#     # lastWindow.title("Results")
+#     # lastWindow.geometry(280x150)
+#     # lastWindow.resizable(False, False)
+#     # finalCanvas = Canvas(lastWindow, bg= "white", width = 220, height = 140)
+#     # finalCanvas.pack(fill = BOTH, expand = True)
+#     # finalCanvas.create_image(0,0, image= img, anchor="nw")
+#     # finalCanvas.create_text(150, 30, text= f"Your measurement is {good} cm!", fill = "white")
+
+# def meters():
+#     pass
+#     # get_distance()
+#     # get_distance_for_servo()
+#     # final = get_height()
+#     # good = final // 100 
+#     # lastWindow = TopLevel(master)
+#     # lastWindow.title("Results")
+#     # lastWindow.geometry(280x150)
+#     # lastWindow.resizable(False, False)
+#     # finalCanvas = Canvas(lastWindow, bg= "white", width = 220, height = 140)
+#     # finalCanvas.pack(fill = BOTH, expand = True)
+#     # finalCanvas.create_image(0,0, image= img, anchor="nw")
+#     # finalCanvas.create_text(150, 30, text= f"Your measurement is {good} m!", fill = "white")
+
+# def inches():
+#     pass
+#     # get_distance()
+#     # get_distance_for_servo()
+#     # final = get_height()
+#     # good = final * (25/64)
+#     # lastWindow = TopLevel(master)
+#     # lastWindow.title("Results")
+#     # lastWindow.geometry(280x150)
+#     # lastWindow.resizable(False, False)
+#     # finalCanvas = Canvas(lastWindow, bg= "white", width = 220, height = 140)
+#     # finalCanvas.pack(fill = BOTH, expand = True)
+#     # finalCanvas.create_image(0,0, image= img, anchor="nw")
+#     # finalCanvas.create_text(150, 30, text= f"Your measurement is {good} inches!", fill = "white")
     
+# def feet():
+#     pass
+#     # get_distance()
+#     # get_distance_for_servo()
+#     # get_height()
+#     # final = get_height()
+#     # good = final // 30.48
+#     # lastWindow = TopLevel(master)
+#     # lastWindow.title("Results")
+#     # lastWindow.geometry(280x150)
+#     # lastWindow.resizable(False, False)
+#     # finalCanvas = Canvas(lastWindow, bg= "white", width = 220, height = 140)
+#     # finalCanvas.pack(fill = BOTH, expand = True)
+#     # finalCanvas.create_image(0,0, image= img, anchor="nw")
+#     # finalCanvas.create_text(150, 30, text= f"Your measurement is {good} ft!", fill = "white")
 
-    # A Label widget to show in toplevel
-    # spec = Label(newWindow, text ="Choose a specific measurement:")
-    # spec.pack()
+# def yards():
+#     pass
+#     # get_distance()
+#     # get_distance_for_servo()
+#     # final = get_height()
+#     # good = final // 91.44
+#     # lastWindow = TopLevel(master)
+#     # lastWindow.title("Results")
+#     # lastWindow.geometry(280x150)
+#     # lastWindow.resizable(False, False)
+#     # finalCanvas = Canvas(lastWindow, bg= "white", width = 220, height = 140)
+#     # finalCanvas.pack(fill = BOTH, expand = True)
+#     # finalCanvas.create_image(0,0, image= img, anchor="nw")
+#     # finalCanvas.create_text(150, 30, text= f"Your measurement is {good} yds!", fill = "white")
 
-    mbtn = Button(canvas3, text = "Click for Centimeters:", command=centimeters())
-    mbtn.pack(pady=10, fill=BOTH)
-
-    mbtntwo = Button(canvas3, text="Click for Meters:", command=meters())
-    mbtntwo.pack(pady=10, fill=BOTH)
         
-btn = Button(canvas,text ="Click for Metric Units",command = metricUnits, )
-btn.pack(pady = 10, fill=BOTH)
-
-btntwo = Button(canvas,text ="Click for Standard Units",command = standardUnits)
-btntwo.pack(pady = 10, fill=BOTH)
-
 # mainloop, runs infinitely
 mainloop()
